@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:masterbranch_interview_test/utils/constants.dart';
+import 'package:masterbranch_interview_test/constants/app_constants.dart';
+import 'package:masterbranch_interview_test/constants/colors_constant.dart';
+import 'package:masterbranch_interview_test/constants/dimension_constant.dart';
 import 'package:masterbranch_interview_test/utils/date_util.dart';
 import 'package:masterbranch_interview_test/view_models/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class CalendarView extends StatefulWidget {
-  const CalendarView({Key? key}) : super(key: key);
+class CalendarWidget extends StatefulWidget {
+  const CalendarWidget({Key? key}) : super(key: key);
 
   @override
-  _CalendarViewState createState() => _CalendarViewState();
+  _CalendarWidgetState createState() => _CalendarWidgetState();
 }
 
-class _CalendarViewState extends State<CalendarView> {
+class _CalendarWidgetState extends State<CalendarWidget> {
   DateTime now = DateTime.now();
 
   @override
@@ -47,24 +49,33 @@ class _CalendarViewState extends State<CalendarView> {
 
   Widget _buildDay(DateTime date) {
     var value = Provider.of<HomeViewModel>(context, listen: false);
+    var isSelectedDate =
+        AppDateUtils.isSameDate(value.currentSelectedTime, date);
+    var isDayInMonth =
+        AppDateUtils.isSameYearAndMonth(value.currentCalendarTime, date);
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          value.onSelectTime(date);
+          if (isDayInMonth) {
+            value.onSelectTime(date);
+          }
         },
         child: CircleAvatar(
-          backgroundColor: value.currentSelectedTime.day == date.day &&
-                  value.currentSelectedTime.month == date.month &&
-                  value.currentCalendarTime.year == date.year
-              ? Colors.green
-              : Colors.transparent,
+          backgroundColor: isSelectedDate
+              ? AppColors.selectedDate
+              : (value.isDateHaveEvent(date)
+                  ? AppColors.lightOrange
+                  : Colors.transparent),
           child: Text(
             date.day.toString(),
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: value.currentCalendarTime.month == date.month
-                    ? Colors.black
-                    : Colors.black38),
+                color: isDayInMonth
+                    ? (isSelectedDate
+                        ? AppColors.calendarMainTextColorHightLight
+                        : AppColors.calendarMainTextColor)
+                    : AppColors.calendarSecondaryTextColor,
+                fontSize: AppDimension.textSizeSmall),
           ),
         ),
       ),
@@ -88,6 +99,10 @@ class _CalendarViewState extends State<CalendarView> {
           child: Text(
             weekDay,
             textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.textBodyColor,
+              fontSize: AppDimension.textSizeSmall,
+            ),
           ),
         ),
       ),

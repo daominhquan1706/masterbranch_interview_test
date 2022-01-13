@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:masterbranch_interview_test/constants/colors_constant.dart';
+import 'package:masterbranch_interview_test/constants/text_style_constant.dart';
+import 'package:masterbranch_interview_test/ui/widget/card_item_widget.dart';
 import 'package:masterbranch_interview_test/view_models/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import 'calendar_view.dart';
+import 'widget/calendar_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,6 +18,7 @@ class HomeScreen extends StatelessWidget {
         create: (_) => HomeViewModel(),
         builder: (context, value) {
           return Scaffold(
+            backgroundColor: AppColors.calendarTileColor,
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -21,16 +26,34 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _topView(context),
-                    const CalendarView(),
-                    Divider(
-                      thickness: 4,
+                    const CalendarWidget(),
+                    Container(
+                      width: double.infinity,
+                      height: 4,
                       color: Colors.grey.withOpacity(0.2),
                     ),
-                    const Text("Upcoming Events"),
-                    const Text("Today, 4 Apr"),
-                    _buildCardItem(),
-                    _buildCardItem(),
-                    _buildCardItem()
+                    Expanded(
+                        child: ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            "Upcoming Events",
+                            style: AppTextStyle.textViewH1,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            "Today, 4 Apr",
+                            style: AppTextStyle.textViewSubTitle,
+                          ),
+                        ),
+                        _buildCardItem(),
+                        _buildCardItem(),
+                        _buildCardItem()
+                      ],
+                    ))
                   ],
                 ),
               ),
@@ -40,85 +63,38 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildCardItem() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
-          ),
-          margin: const EdgeInsets.only(left: 10),
-          child: ListTile(
-            title: const Text("Frist Session with Alen Stan"),
-            trailing: const CircleAvatar(
-              child: Icon(Icons.camera_alt_outlined),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("9:00 AM - 09:30 AM GMT+8"),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    SizedBox(
-                      width: 30,
-                      height: 30,
-                      child: CircleAvatar(
-                        child: FlutterLogo(),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "View client Profile",
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+    return const Padding(
+      padding: EdgeInsets.only(top: 8.0),
+      child: CardItemWidget(),
     );
   }
 
   Widget _topView(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
           onPressed: () {
             Provider.of<HomeViewModel>(context, listen: false)
                 .onPreviousMonth();
           },
-          icon: const Icon(Icons.arrow_left),
+          icon: const Icon(CupertinoIcons.back),
         ),
-        Consumer<HomeViewModel>(builder: (context, value, child) {
-          final f = DateFormat('MMMM yyyy');
-          return SizedBox(
-            width: 120,
-            child: Text(
+        Expanded(
+          child: Consumer<HomeViewModel>(builder: (context, value, child) {
+            final f = DateFormat('MMMM yyyy');
+            return Text(
               f.format(value.currentCalendarTime),
+              style: AppTextStyle.textViewH1,
               textAlign: TextAlign.center,
-            ),
-          );
-        }),
+            );
+          }),
+        ),
         IconButton(
           onPressed: () {
             Provider.of<HomeViewModel>(context, listen: false).onNextMonth();
           },
-          icon: const Icon(Icons.arrow_right),
+          icon: const Icon(CupertinoIcons.forward),
         ),
       ],
     );
