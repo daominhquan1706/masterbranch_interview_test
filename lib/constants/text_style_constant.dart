@@ -6,7 +6,7 @@ class AppTextStyle {
   static TextStyle textViewH1 = TextStyle(
     color: AppColors.darkBlue,
     fontWeight: FontWeight.w700,
-    fontSize: AppDimension.textSizeLarge,
+    fontSize: AppDimension.textSizeLargeX2,
   );
 
   static TextStyle textViewBody = TextStyle(
@@ -17,11 +17,11 @@ class AppTextStyle {
   static TextStyle textViewTitle = TextStyle(
     color: AppColors.darkBlue,
     fontWeight: FontWeight.bold,
-    fontSize: 12,
+    fontSize: AppDimension.textSizeMedium,
   );
-  static TextStyle textViewSubTitle = const TextStyle(
+  static TextStyle textViewSubTitle = TextStyle(
     color: Colors.black54,
     fontWeight: FontWeight.w100,
-    fontSize: 12,
+    fontSize: AppDimension.textSizeSmall,
   );
 }

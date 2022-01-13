@@ -30,4 +30,6 @@ class AppDateUtils {
   static bool isSameYearAndMonth(DateTime date1, DateTime date2) {
     return date1.month == date2.month && date1.year == date2.year;
   }
+
+  static DateTime convertStringToDateTime(String str) => DateTime.parse(str);
 }

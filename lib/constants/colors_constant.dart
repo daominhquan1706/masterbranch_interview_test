@@ -15,4 +15,5 @@ class AppColors {
   static Color calendarMainTextColor = Colors.black87;
   static Color calendarSecondaryTextColor = Colors.black38;
   static Color calendarMainTextColorHightLight = Colors.white;
+  static Color textBodyColor = Colors.black54;
 }
