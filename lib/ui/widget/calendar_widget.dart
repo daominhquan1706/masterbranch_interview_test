@@ -110,7 +110,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       }
                       return Wrap(
                         children: list
-                            .getRange(0, min(numOfItem - 1, list.length - 1))
+                            .getRange(0, min(numOfItem, list.length))
                             .map(
                               (e) => SizedBox(
                                 height: 30,

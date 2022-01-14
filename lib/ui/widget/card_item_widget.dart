@@ -15,7 +15,7 @@ class CardItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isWeb) {
-      return _buildWebUI();
+      return _buildWebUI(context);
     }
     return _buildMobileUI();
   }
@@ -86,10 +86,34 @@ class CardItemWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildWebUI() {
+  Widget _buildWebUI(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        UrlUtil.launchURL(calendarItem.url);
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Event infomation'),
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(Icons.close))
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CardItemWidget(
+                  calendarItem: calendarItem,
+                  isWeb: false,
+                ),
+              ],
+            ),
+          ),
+        );
       },
       child: Container(
         width: double.infinity,
