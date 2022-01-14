@@ -1,4 +1,21 @@
+import 'package:intl/intl.dart';
+
 class AppDateUtils {
+  static List months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
   static List<DateTime> getListMonday({required int year, required int month}) {
     var date = (DateTime(year, month, 0)).subtract(const Duration(days: 7));
     List<DateTime> listMonday = [];
@@ -32,4 +49,18 @@ class AppDateUtils {
   }
 
   static DateTime convertStringToDateTime(String str) => DateTime.parse(str);
+
+  static String getStringTime(DateTime date) {
+    return DateFormat.jm().format(date);
+  }
+
+  static String getDateTitle(DateTime date) {
+    var weekDay = DateFormat('EEEE').format(date);
+    final day = DateFormat('d').format(date);
+    final month = months[date.month - 1];
+    if (AppDateUtils.isSameDate(date, DateTime.now())) {
+      weekDay = "Today";
+    }
+    return "$weekDay, $day $month";
+  }
 }

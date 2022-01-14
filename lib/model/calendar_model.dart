@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:masterbranch_interview_test/utils/date_util.dart';
 
 class CalendarItem {
   late String id;
@@ -12,6 +13,7 @@ class CalendarItem {
   CalendarItem({
     required this.id,
     required this.name,
+    required this.url,
     required this.startDate,
     required this.startTime,
     required this.endDate,
@@ -37,8 +39,17 @@ class CalendarItem {
     return data;
   }
 
-  DateTime getStartDateTime() {
+  DateTime get startDateTime {
     final f = DateFormat('yyyy-MM-dd hh:mm');
     return f.parse("$startDate $startTime}");
+  }
+
+  DateTime get endDateTime {
+    final f = DateFormat('yyyy-MM-dd hh:mm');
+    return f.parse("$endDate $endTime}");
+  }
+
+  String get dateForDisplay {
+    return "${AppDateUtils.getStringTime(startDateTime)} - ${AppDateUtils.getStringTime(endDateTime)}";
   }
 }

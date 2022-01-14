@@ -14,6 +14,13 @@ class AppTextStyle {
     fontWeight: FontWeight.normal,
     fontSize: AppDimension.textSizeMedium,
   );
+
+  static TextStyle textViewBodyBig = TextStyle(
+    color: Colors.black54,
+    fontWeight: FontWeight.normal,
+    fontSize: AppDimension.textSizeLargeX2,
+  );
+
   static TextStyle textViewTitle = TextStyle(
     color: AppColors.darkBlue,
     fontWeight: FontWeight.bold,

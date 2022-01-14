@@ -8,11 +8,10 @@ class HomeViewModel with ChangeNotifier {
   late DateTime currentSelectedTime;
 
   List<CalendarItem> listItem = [];
+
   HomeViewModel() {
     currentCalendarTime = DateTime.now();
     currentSelectedTime = DateTime.now();
-
-    fetchData();
   }
 
   Future<void> fetchData() async {
@@ -22,7 +21,7 @@ class HomeViewModel with ChangeNotifier {
         .toList();
   }
 
-  List<CalendarItem> getListCalendarByCurrentDate() {
+  List<CalendarItem> get listCalendarByCurrentDate {
     if (listItem.isEmpty) return [];
 
     return getListCalendarByDate(currentSelectedTime);
@@ -33,7 +32,7 @@ class HomeViewModel with ChangeNotifier {
 
     return listItem
         .where((element) =>
-            AppDateUtils.isSameDate(element.getStartDateTime(), dateTime))
+            AppDateUtils.isSameDate(element.startDateTime, dateTime))
         .toList();
   }
 
@@ -56,5 +55,9 @@ class HomeViewModel with ChangeNotifier {
   void onSelectTime(DateTime dateTime) {
     currentSelectedTime = dateTime;
     notifyListeners();
+  }
+
+  String get getCurrentDateString {
+    return AppDateUtils.getDateTitle(currentSelectedTime);
   }
 }

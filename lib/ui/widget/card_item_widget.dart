@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:masterbranch_interview_test/constants/colors_constant.dart';
 import 'package:masterbranch_interview_test/constants/text_style_constant.dart';
+import 'package:masterbranch_interview_test/model/calendar_model.dart';
+import 'package:masterbranch_interview_test/utils/url_util.dart';
 
 class CardItemWidget extends StatelessWidget {
-  const CardItemWidget({Key? key}) : super(key: key);
+  final CalendarItem calendarItem;
+  final bool isWeb;
+
+  const CardItemWidget(
+      {Key? key, required this.calendarItem, this.isWeb = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (isWeb) {
+      return _buildWebUI();
+    }
+    return _buildMobileUI();
+  }
+
+  Container _buildMobileUI() {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.darkBlue,
@@ -23,7 +37,7 @@ class CardItemWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: ListTile(
             title: Text(
-              "Frist Session with Alen Stan",
+              calendarItem.name,
               style: AppTextStyle.textViewTitle,
             ),
             trailing: CircleAvatar(
@@ -35,12 +49,12 @@ class CardItemWidget extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: const Text("9:00 AM - 09:30 AM GMT+8"),
+                  child: Text(calendarItem.dateForDisplay),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    SizedBox(
+                  children: [
+                    const SizedBox(
                       width: 30,
                       height: 30,
                       child: CircleAvatar(
@@ -48,11 +62,17 @@ class CardItemWidget extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "View client Profile",
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          print(calendarItem.url);
+                          UrlUtil.launchURL(calendarItem.url);
+                        },
+                        child: const Text(
+                          "View client Profile",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       ),
                     )
@@ -61,6 +81,25 @@ class CardItemWidget extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Container _buildWebUI() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppColors.darkOrange,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Text(
+          calendarItem.name,
+          maxLines: 1,
         ),
       ),
     );

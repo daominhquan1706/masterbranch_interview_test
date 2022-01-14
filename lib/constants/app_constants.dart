@@ -8,4 +8,6 @@ class Constant {
     "FRI",
     "SAT",
   ];
+
+  static double mobileScreenSize = 600;
 }
