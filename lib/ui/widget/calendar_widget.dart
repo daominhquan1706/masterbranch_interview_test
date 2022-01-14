@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:masterbranch_interview_test/constants/app_constants.dart';
 import 'package:masterbranch_interview_test/constants/colors_constant.dart';
@@ -100,21 +102,31 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                         fontSize: AppDimension.textSizeSmall),
                   ),
                   Expanded(
-                    child: Wrap(
-                      children: value
-                          .getListCalendarByDate(date)
-                          .map(
-                            (e) => Padding(
-                              padding: const EdgeInsets.only(top: 6.0),
-                              child: CardItemWidget(
-                                calendarItem: e,
-                                isWeb: true,
+                    child: LayoutBuilder(builder: (context, constraint) {
+                      var numOfItem = (constraint.maxHeight / 30).floor();
+                      final list = value.getListCalendarByDate(date);
+                      if (list.isEmpty || numOfItem == 0) {
+                        return Container();
+                      }
+                      return Wrap(
+                        children: list
+                            .getRange(0, min(numOfItem - 1, list.length - 1))
+                            .map(
+                              (e) => SizedBox(
+                                height: 30,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 6.0),
+                                  child: CardItemWidget(
+                                    calendarItem: e,
+                                    isWeb: true,
+                                  ),
+                                ),
                               ),
-                            ),
-                          )
-                          .toList(),
-                      clipBehavior: Clip.antiAlias,
-                    ),
+                            )
+                            .toList(),
+                        clipBehavior: Clip.antiAlias,
+                      );
+                    }),
                   )
                 ],
               ),

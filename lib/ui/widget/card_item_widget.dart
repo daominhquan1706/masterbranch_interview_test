@@ -86,20 +86,26 @@ class CardItemWidget extends StatelessWidget {
     );
   }
 
-  Container _buildWebUI() {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.darkOrange,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(5.0),
+  Widget _buildWebUI() {
+    return GestureDetector(
+      onTap: () {
+        UrlUtil.launchURL(calendarItem.url);
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.darkOrange,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Text(
-          calendarItem.name,
-          maxLines: 1,
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            calendarItem.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ),
     );
